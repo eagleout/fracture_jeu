@@ -7,4 +7,5 @@ js = js.replace("'use strict';\n", '')
 out = html.replace('/*CSS*/', css).replace('/*JS*/', "'use strict';\n" + js)
 dist = pathlib.Path(__file__).parent / 'dist'; dist.mkdir(exist_ok=True)
 (dist / 'index.html').write_text(out)
+(pathlib.Path(__file__).parent / 'index.html').write_text(out)  # racine : GitHub Pages ouvre le jeu directement
 print('ok', len(out))

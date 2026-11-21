@@ -6,9 +6,9 @@ Prototype jouable de **FRACTURE MOBILE** : un TPS d'exploration en escouade, en 
 
 ## Jouer
 
-Ouvrir `dist/index.html` dans un navigateur récent, en mode paysage sur téléphone. Le fichier est autonome : un seul HTML, sans dépendance ni serveur.
+**En ligne : [eagleout.github.io/fracture_jeu](https://eagleout.github.io/fracture_jeu/)**, à ouvrir sur téléphone en mode paysage.
 
-Pour le publier en ligne : activer GitHub Pages sur la branche `main` et ouvrir `https://<compte>.github.io/fracture_jeu/dist/`.
+En local : ouvrir `index.html` (ou `dist/index.html`, identique) dans un navigateur récent. Le fichier est autonome : un seul HTML, sans dépendance ni serveur. GitHub Pages publie la branche `main` depuis la racine du dépôt.
 
 Le premier lancement déroule la formation : crash, franchissement de la poutre, premier patrouilleur, arrivée à l'Avant-Poste. Ilya y donne les missions ; le tableau des escouades recrute les coéquipiers.
 
@@ -48,13 +48,13 @@ Le premier lancement déroule la formation : crash, franchissement de la poutre,
 | `src/ui.js` | Contrôles tactiles, HUD, panneaux, son synthétisé |
 | `src/main.js` | Démarrage, écrans d'accueil, boucle principale |
 | `src/index.html`, `src/style.css` | Gabarit et styles |
-| `build.py` | Assemble `dist/index.html` |
+| `build.py` | Assemble `index.html` (racine, pour GitHub Pages) et `dist/index.html` |
 | `tests/` | Parcours automatisés (Playwright) |
 
 ## Construire et tester
 
 ```bash
-python3 build.py                 # régénère dist/index.html
+python3 build.py                 # régénère index.html et dist/index.html
 pip install playwright           # une fois
 python3 tests/test_play.py       # formation, 4 missions, Centrale, sauvegarde, rechargement
 python3 tests/test_net.py        # monde partagé et présence, avec une plateforme simulée

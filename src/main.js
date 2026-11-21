@@ -4,7 +4,9 @@ const T0 = performance.now();
 const nextFrame = () => new Promise(r => requestAnimationFrame(() => setTimeout(r, 0)));
 async function boot() {
   const stepsEl = $('bootSteps'), bar = $('bootBar').firstChild, step = (t, p) => { stepsEl.textContent = t; bar.style.width = p + '%'; };
-  try { R.init($('gl')); } catch (e) { step('WebGL est indisponible sur cet appareil : le prototype ne peut pas démarrer.', 100); return; }
+  try { R.init($('gl')); } catch (e) {
+    console.error(e);
+    step(e && e.code === 'nogl' ? 'WebGL est désactivé ou indisponible dans ce navigateur. Essaie Chrome ou Safari à jour, avec l’accélération matérielle activée.' : `Erreur de rendu au démarrage : ${String(e && e.message || e).slice(0, 160)}`, 100); return; }
   UI.init(); R.resize(0.75);
   step('Chargement du Secteur Éclipse…', 18); await nextFrame();
   buildWorld(); step('Préparation de la carte…', 52); await nextFrame();
