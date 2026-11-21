@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#142234">
+<title>FRACTURE — Secteur Éclipse (prototype jouable)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>/*CSS*/</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+<canvas id="ov"></canvas>
+<div id="layer" class="hide"></div>
+<div class="vig" id="vig" style="opacity:0"></div>
+
+<div id="hud" class="hide">
+  <div class="tl">
+    <div class="card" id="me"><div class="pi" id="meIcon">◈</div><div style="flex:1;min-width:0"><div class="nm" id="meName">—</div><div class="sub" id="meSub">—</div><div class="bar" id="hpbar"><i style="width:100%"></i></div></div><button class="pe" id="medBtn" data-b="med">✚ 1</button></div>
+    <div class="card" id="obj"><div class="k" id="objK">Objectif</div><div class="t" id="objT">—</div><div class="d" id="objD"></div><div class="bar hide" id="objBar"><i></i></div></div>
+    <div id="squadList"></div>
+    <div id="feed"></div>
+  </div>
+  <div class="tc">
+    <canvas id="compass" width="420" height="30"></canvas>
+    <div id="zone"></div>
+    <div id="bossbar" class="hide">Gardien 07<div class="bar"><i style="width:100%"></i></div></div>
+    <div id="toasts"></div>
+  </div>
+  <div class="tr">
+    <canvas id="mini" width="232" height="232" class="pe" data-b="map"></canvas>
+    <div class="rowbtn"><div id="inst"></div><button class="ib pe" data-b="squadP" title="Escouade">✦</button><button class="ib pe" data-b="menu" title="Menu">☰</button></div>
+  </div>
+  <div id="weapons"></div>
+  <button class="ctl" id="fire" data-b="fire">◉</button>
+  <button class="ctl" id="aim" data-b="aim">◎</button>
+  <button class="ctl" id="jump" data-b="jump">⤒</button>
+  <button class="ctl" id="reload" data-b="reload">↻</button>
+  <button class="ctl" id="ability" data-b="ability"><span id="abIcon">◈</span><i class="cd" id="abCd"></i></button>
+  <button class="ctl hide" id="fireL" data-b="fire">◉</button>
+  <button id="interact" class="hide" data-b="interact"><span class="ring" id="iRing"></span><span id="iLabel">Interagir</span></button>
+  <div class="bl"><button class="ib" data-b="ping" title="Ping">⌖ Ping</button><button class="ib" data-b="msg" title="Messages">💬</button><button class="ib" data-b="emote" title="Emotes">☺</button></div>
+  <div id="stickHint">Joystick<br>ici</div>
+  <div id="autoBadge" class="hide" data-b="autoOff">Course auto · toucher pour arrêter</div>
+  <div id="carry" class="hide"></div>
+</div>
+<div id="stick" class="hide"><span class="lock">⇡ Course auto</span><i></i></div>
+
+<div id="downO" class="hide"><div class="box"><h2>À terre</h2><div id="downT" class="note"></div><div class="bar" style="width:220px;margin:8px auto 0"><i id="downBar" style="width:0%"></i></div></div></div>
+<div id="deadO" class="hide"><div class="box"><h2>Neutralisé</h2><p class="note" id="deadMsg">Ta progression est conservée. Le module ou le noyau transporté reste au sol.</p><div style="display:flex;gap:8px;justify-content:center;margin-top:10px"><button class="btn pri" id="rsAP">Réapparaître · Avant-Poste</button><button class="btn hide" id="rsCent">Point sécurisé · Centrale</button></div></div></div>
+
+<div id="boot" class="screen"><h1 class="logo">FRACTURE</h1><div class="logo-sub">Secteur Éclipse · Alpha privée</div><div id="bootSteps">Initialisation…</div><div class="bar" id="bootBar"><i style="width:4%"></i></div></div>
+
+<div id="title" class="screen dim hide"><div class="pan">
+  <h1 class="logo">FRACTURE</h1><div class="logo-sub">Secteur Éclipse · Alpha privée</div>
+  <p class="note" style="margin:16px 0 0">TPS d’exploration et de stratégie, en escouade de quatre. Le monde garde la trace de vos actions.</p>
+  <div class="row"><button class="btn pri" id="btnContinue">Continuer</button><button class="btn" id="btnNew">Nouvel opérateur</button><button class="btn" id="btnFull">Plein écran</button></div>
+  <p class="note" id="titleNote" style="margin-top:14px"></p>
+</div></div>
+
+<div id="create" class="screen hide"><div class="pan">
+  <h2 style="margin:0">Création de l’opérateur</h2>
+  <label for="cName">Indicatif</label><input id="cName" maxlength="14" placeholder="ex. Vesper" autocomplete="off">
+  <label>Tenue</label><div class="sw" id="cOutfit"></div>
+  <label>Profession</label><div class="profs" id="cProf"></div>
+  <p class="note" style="margin:10px 0 0">Profession modifiable plus tard à l’Avant-Poste.</p>
+  <button class="btn pri" id="cGo" style="width:100%;margin-top:12px">Entrer dans le Secteur</button>
+</div></div>
+
+<div id="panel" class="screen dim hide"><div class="pan">
+  <div class="tabs" id="tabs"></div>
+  <div class="body" id="pbody"></div>
+</div></div>
+
+<div id="reward" class="screen dim hide"><div class="pan" id="rwBox"></div></div>
+<div id="dialog" class="screen dim hide"><div class="pan" id="dlgBox"></div></div>
+<div id="wheel" class="wheel hide"><div class="box" id="wheelBox"></div></div>
+<div id="rotate"><div class="ph"></div><h2 style="margin:0">Tourne ton téléphone</h2><p class="note">FRACTURE se joue à l’horizontale.</p></div>
+
+<script>/*JS*/</script>
+</body>
+</html>
